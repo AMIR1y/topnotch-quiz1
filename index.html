@@ -1,0 +1,753 @@
+```html
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>یک سورپرایز شیرین برای تو 💜🍓</title>
+    
+    <!-- فونت زیبای فارسی وزیرمتن و لاله‌زار از گوگل فونت -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- تیلویند سی‌اس‌اس -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'sans-serif'],
+                        display: ['Lalezar', 'cursive'],
+                    },
+                    colors: {
+                        midnight: '#0f0c29',
+                        deepPurple: '#302b63',
+                        royalBlue: '#24243e',
+                        neonPurple: '#b829ea',
+                        neonBlue: '#00d2ff',
+                        chocoDark: '#3d1c04',
+                        chocoMilk: '#6b3410',
+                        berryRed: '#ff2a5f',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 7s ease-in-out 2s infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-18px) rotate(6deg)' },
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-4deg)' },
+                            '50%': { transform: 'rotate(4deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* پس‌زمینه رویایی آبی و بنفش */
+        body {
+            background: radial-gradient(circle at top right, #2b1055, #1b1448, #0b132b);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #f8fafc;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* افکت گلس‌مورفیسم */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(12, 8, 44, 0.5);
+        }
+
+        .glass-button {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.5), rgba(59, 130, 246, 0.5));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.6), 0 0 15px rgba(56, 189, 248, 0.4);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .glass-button:active {
+            transform: scale(0.97);
+        }
+
+        /* انیمیشن پاکت نامه سه‌بعدی */
+        .envelope-wrapper {
+            perspective: 1000px;
+        }
+        
+        .envelope-flap {
+            transform-origin: top;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.2s;
+        }
+
+        .envelope-open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .letter-paper {
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s, opacity 0.5s ease 0.3s;
+            transform: translateY(20px) scale(0.9);
+            opacity: 0;
+        }
+
+        .envelope-open .letter-paper {
+            transform: translateY(-40px) scale(1);
+            opacity: 1;
+        }
+
+        /* ذرات شناور هنگام کلیک یا حرکت موس */
+        .floating-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 50;
+            animation: particleRise 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes particleRise {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(calc(-50% + var(--tx)), calc(-50% - 60px)) scale(1.2) rotate(var(--rot));
+            }
+            100% {
+                opacity: 0;
+                transform: translate(calc(-50% + var(--tx2)), calc(-50% - 130px)) scale(0.8) rotate(calc(var(--rot) * 2));
+            }
+        }
+
+        /* انیمیشن موج شکلات آب‌شده */
+        .choco-bowl {
+            background: radial-gradient(ellipse at center, #7c3f18 0%, #4a2007 70%, #2d1102 100%);
+            box-shadow: inset 0 -10px 25px rgba(0,0,0,0.7), 0 10px 30px rgba(139, 92, 246, 0.3);
+        }
+
+        /* اسکرول‌بار سفارشی */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0c29;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #6366f1, #a855f7);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="relative selection:bg-purple-500 selection:text-white">
+
+    <!-- درخشش‌های پس‌زمینه (Ambient Glows) -->
+    <div class="fixed top-[-10%] left-[-10%] w-96 h-96 bg-blue-600/25 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-96 h-96 bg-purple-600/30 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="fixed top-[40%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-indigo-500/20 rounded-full blur-[100px] pointer-events-none"></div>
+
+    <!-- پس‌زمینه المان‌های شناور تعاملی -->
+    <div id="ambient-elements" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
+
+    <!-- نوار ابزار شناور بالا (صدا و تنظیمات شخصی‌سازی) -->
+    <header class="fixed top-0 left-0 right-0 z-40 p-4 flex justify-between items-center max-w-4xl mx-auto">
+        <!-- دکمه کنترل صدا -->
+        <button id="soundToggle" onclick="toggleSound()" class="glass-card p-3 rounded-2xl flex items-center gap-2 text-sm font-medium text-blue-200 hover:text-white hover:border-purple-400/50 transition-all shadow-lg" title="قطع و وصل افکت صوتی">
+            <span id="soundIcon" class="text-lg">🔊</span>
+            <span class="hidden sm:inline" id="soundText">صدا روشن</span>
+        </button>
+
+        <!-- نشانگر شیرینی عشق -->
+        <div class="glass-card px-4 py-2 rounded-2xl flex items-center gap-2 text-sm border-purple-400/30">
+            <span>درجه شیرینی:</span>
+            <span id="sweetnessScore" class="font-bold text-transparent bg-clip-text bg-gradient-to-l from-pink-400 to-blue-300 text-base">۱۰۰٪</span>
+            <span>🍓🍫</span>
+        </div>
+
+        <!-- دکمه تنظیمات / شخصی‌سازی -->
+        <button onclick="openSettings()" class="glass-card p-3 rounded-2xl flex items-center gap-2 text-sm font-medium text-purple-200 hover:text-white hover:border-blue-400/50 transition-all shadow-lg" title="شخصی‌سازی پیام و اسم">
+            <span class="text-lg">✨</span>
+            <span class="hidden sm:inline">ساخت نسخه شخصی</span>
+        </button>
+    </header>
+
+    <!-- محتوای اصلی صفحه -->
+    <main class="relative z-10 max-w-2xl mx-auto px-4 pt-24 pb-20 flex flex-col items-center gap-12">
+
+        <!-- بخش ۱: هدر خوش‌آمدگویی -->
+        <section class="text-center space-y-4 mt-2">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card text-xs sm:text-sm text-blue-200 border-blue-400/30 animate-pulse-slow">
+                <span>یک دنیای آبی و بنفش مخصوص تو</span>
+                <span>💙💜</span>
+            </div>
+            
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight text-transparent bg-clip-text bg-gradient-to-l from-blue-300 via-purple-200 to-pink-300 drop-shadow-sm">
+                سلام <span id="displayPartnerName" class="underline decoration-purple-400/60 decoration-wavy underline-offset-8">عزیزترینم</span>!
+            </h1>
+            
+            <p class="text-slate-300 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
+                اینجا پر از چیزهایی‌ه که دوست داری؛ آرامش آبی، جادوی بنفش، توت‌فرنگی‌های تازه و شکلات‌های شیرین... درست مثل خودت!
+            </p>
+        </section>
+
+        <!-- بخش ۲: پاکت نامه عاشقانه تعاملی -->
+        <section class="w-full flex flex-col items-center">
+            <div id="envelopeContainer" class="envelope-wrapper relative w-full max-w-md cursor-pointer group" onclick="toggleEnvelope()">
+                
+                <!-- بدنه پاکت نامه -->
+                <div class="relative h-64 sm:h-72 rounded-3xl bg-gradient-to-br from-indigo-900/90 via-purple-900/90 to-blue-950/90 border border-purple-400/40 shadow-[0_20px_50px_rgba(79,70,229,0.4)] flex flex-col items-center justify-center p-6 overflow-visible transition-transform duration-300 group-hover:scale-[1.01]">
+                    
+                    <!-- درِ پاکت نامه (Flap) -->
+                    <div class="envelope-flap absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-purple-600/80 to-indigo-800/90 rounded-t-3xl border-b border-purple-300/30 z-20 flex items-end justify-center pb-3 shadow-md" style="clip-path: polygon(0 0, 100% 0, 50% 100%);">
+                    </div>
+
+                    <!-- مهر مومی قلب و توت‌فرنگی روی پاکت -->
+                    <div id="envelopeSeal" class="relative z-30 w-16 h-16 rounded-full bg-gradient-to-tr from-purple-600 to-blue-500 border-2 border-white/60 shadow-[0_0_25px_rgba(168,85,247,0.8)] flex items-center justify-center text-2xl transition-all duration-500 group-hover:scale-110">
+                        💌
+                    </div>
+
+                    <p id="envelopePrompt" class="relative z-30 mt-4 text-sm font-medium text-blue-200 animate-bounce">
+                        برای باز کردن نامه کلیک کن ✨
+                    </p>
+
+                    <!-- کاغذ نامه داخلی -->
+                    <div id="letterContent" class="letter-paper absolute inset-x-3 sm:inset-x-5 top-8 bottom-4 rounded-2xl bg-gradient-to-b from-slate-900/95 to-indigo-950/95 border border-blue-400/40 p-5 sm:p-6 shadow-2xl z-10 flex flex-col justify-between text-center overflow-y-auto">
+                        <div class="flex justify-between items-center text-lg opacity-80">
+                            <span>🍓</span>
+                            <span class="text-xs text-purple-300 font-semibold tracking-wider">یک یادداشت از ته دل</span>
+                            <span>🍫</span>
+                        </div>
+                        
+                        <p id="displayLoveMessage" class="text-sm sm:text-base text-slate-100 leading-7 my-2 font-normal">
+                            بودنت تو زندگیم درست مثل ترکیب توت‌فرنگی و شکلاته؛ هم طراوت و تازگی میاره، هم شیرینی و آرامش! مرسی که هستی و دنیام رو با رنگ‌های قشنگت زیباتر می‌کنی. 💜💙
+                        </p>
+
+                        <div class="text-xs text-blue-300/80 pt-2 border-t border-white/10 flex justify-between items-center">
+                            <span>با تمام عشق 💕</span>
+                            <span class="text-purple-300">(برای بستن دوباره لمس کن)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- بخش ۳: کارگاه شکلاتی و توت‌فرنگی‌های سخنگو (مینی‌گیم تعاملی) -->
+        <section class="w-full glass-card rounded-3xl p-6 sm:p-8 border-purple-400/30 text-center space-y-6 relative overflow-hidden">
+            <div class="space-y-2">
+                <h2 class="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-l from-purple-300 to-blue-300">
+                    🍓 کارگاه شکلات و جمله‌های شیرین 🍫
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-300">
+                    روی توت‌فرنگی‌ها بزن تا تو شکلات آب‌شده غلت بخورن و یک پیام عاشقانه برات بیارن!
+                </p>
+            </div>
+
+            <!-- کاسه شکلات آب‌شده تعاملی -->
+            <div class="relative flex flex-col items-center justify-center py-4">
+                
+                <!-- نمایشگر پیام عاشقانه تصادفی -->
+                <div id="sweetQuoteBox" class="min-h-[68px] w-full max-w-md mb-6 px-4 py-3 rounded-2xl bg-indigo-950/60 border border-blue-400/30 flex items-center justify-center transition-all duration-300">
+                    <p id="sweetQuoteText" class="text-sm sm:text-base font-medium text-purple-200">
+                        یکی از توت‌فرنگی‌های پایین رو انتخاب کن... ✨
+                    </p>
+                </div>
+
+                <!-- کاسه شکلات -->
+                <div onclick="dipStrawberry()" class="choco-bowl relative w-56 h-28 sm:w-64 sm:h-32 rounded-b-[100px] rounded-t-[24px] border-t-4 border-amber-700/60 cursor-pointer flex items-center justify-center group transition-transform active:scale-95">
+                    <!-- درخشش روی شکلات -->
+                    <div class="absolute top-3 left-8 w-16 h-3 bg-white/15 rounded-full blur-[1px] -rotate-6"></div>
+                    
+                    <!-- توت‌فرنگی داخل کاسه -->
+                    <div id="activeStrawberry" class="text-5xl sm:text-6xl transition-all duration-500 transform -translate-y-4 group-hover:translate-y-1 drop-shadow-[0_10px_10px_rgba(0,0,0,0.6)]">
+                        🍓
+                    </div>
+                    
+                    <span id="chocoBadge" class="opacity-0 transition-opacity duration-300 absolute -bottom-3 bg-gradient-to-r from-amber-800 to-amber-950 text-amber-200 text-xs px-3 py-1 rounded-full border border-amber-500/40 shadow-lg">
+                        آغشته به شکلات شد! 😋
+                    </span>
+                </div>
+
+                <!-- دکمه‌های انتخاب توت‌فرنگی و شکلات -->
+                <div class="grid grid-cols-3 gap-3 sm:gap-4 mt-8 w-full max-w-md">
+                    <button onclick="triggerSweetAction('strawberry')" class="glass-button py-3 px-2 rounded-2xl flex flex-col items-center gap-1">
+                        <span class="text-2xl sm:text-3xl">🍓</span>
+                        <span class="text-xs text-blue-100 font-medium">توت‌فرنگی تازه</span>
+                    </button>
+
+                    <button onclick="dipStrawberry()" class="glass-button py-3 px-2 rounded-2xl flex flex-col items-center gap-1 border-purple-400/50 bg-purple-600/30">
+                        <span class="text-2xl sm:text-3xl">🫕</span>
+                        <span class="text-xs text-purple-100 font-medium">بزن تو شکلات!</span>
+                    </button>
+
+                    <button onclick="triggerSweetAction('chocolate')" class="glass-button py-3 px-2 rounded-2xl flex flex-col items-center gap-1">
+                        <span class="text-2xl sm:text-3xl">🍫</span>
+                        <span class="text-xs text-blue-100 font-medium">شکلات قلبی</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- بخش ۴: دکمه باران قلب، توت‌فرنگی و شکلات -->
+        <section class="text-center">
+            <button onclick="launchSweetStorm(event)" class="px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-bold text-sm sm:text-base shadow-[0_0_30px_rgba(124,58,237,0.6)] hover:shadow-[0_0_45px_rgba(59,130,246,0.8)] transition-all transform hover:-translate-y-1 active:scale-95 flex items-center gap-3 mx-auto border border-white/25">
+                <span>یه بارونِ توت‌فرنگی و شکلات بفرست!</span>
+                <span class="text-xl">💜🍓🍫💙</span>
+            </button>
+        </section>
+
+    </main>
+
+    <!-- پنجره (Modal) تنظیمات و شخصی‌سازی مخفی -->
+    <div id="settingsModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6 sm:p-7 border-purple-400/40 space-y-5 relative animate-fadeIn">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-l from-blue-300 to-purple-300">
+                    ✨ شخصی‌سازی برای پارتنر
+                </h3>
+                <button onclick="closeSettings()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-300">
+                    ✕
+                </button>
+            </div>
+
+            <div class="space-y-4 text-right">
+                <div>
+                    <label class="block text-xs text-blue-200 mb-1.5">نام یا لقب قشنگ پارتنرت:</label>
+                    <input type="text" id="inputPartnerName" placeholder="مثلاً: جانانم، سارا، عشقم..." class="w-full px-4 py-2.5 rounded-xl bg-slate-900/80 border border-purple-400/30 text-white text-sm focus:outline-none focus:border-blue-400 transition-colors">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-blue-200 mb-1.5">متن داخل پاکت نامه عاشقانه:</label>
+                    <textarea id="inputLoveMessage" rows="4" placeholder="پیام اختصاصی خودت رو اینجا بنویس..." class="w-full px-4 py-2.5 rounded-xl bg-slate-900/80 border border-purple-400/30 text-white text-sm focus:outline-none focus:border-blue-400 transition-colors leading-relaxed"></textarea>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                <button onclick="saveCustomization()" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-semibold text-sm shadow-lg transition-all">
+                    اعمال تغییرات در صفحه ✅
+                </button>
+                <button onclick="copyShareableLink()" class="py-3 px-4 rounded-xl glass-button text-blue-200 font-medium text-sm flex items-center justify-center gap-2">
+                    <span>کپی لینک اختصاصی</span>
+                    <span>🔗</span>
+                </button>
+            </div>
+
+            <!-- پیام تایید کپی لینک -->
+            <p id="copyFeedback" class="text-center text-xs text-emerald-300 hidden">
+                لینک اختصاصی با اسم و پیام شما کپی شد! می‌تونی براش بفرستی 💜
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // ۱. مدیریت صدا با Web Audio API (بدون فایل خارجی)
+        // ==========================================
+        let audioCtx = null;
+        let soundEnabled = true;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        // پخش نت‌های ملایم و رویایی (شبیه زنگوله شیشه‌ای / پیانو ملایم)
+        function playSweetNote(type = 'pop') {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                if (type === 'pop') {
+                    // صدای حبابی شیرین
+                    osc.type = 'sine';
+                    const freqs = [523.25, 587.33, 659.25, 783.99, 880.00]; // گام پنتاتونیک شاد
+                    const randomFreq = freqs[Math.floor(Math.random() * freqs.length)];
+                    osc.frequency.setValueAtTime(randomFreq, now);
+                    osc.frequency.exponentialRampToValueAtTime(randomFreq * 1.25, now + 0.15);
+
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } 
+                else if (type === 'envelope') {
+                    // آکورد جادویی هنگام باز کردن پاکت نامه
+                    const chord = [440, 554.37, 659.25, 880]; // A major dream chord
+                    chord.forEach((freq, idx) => {
+                        const o = audioCtx.createOscillator();
+                        const g = audioCtx.createGain();
+                        o.type = 'triangle';
+                        o.frequency.setValueAtTime(freq, now + idx * 0.08);
+                        
+                        g.gain.setValueAtTime(0.001, now + idx * 0.08);
+                        g.gain.linearRampToValueAtTime(0.12, now + idx * 0.08 + 0.05);
+                        g.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 1.2);
+
+                        o.connect(g);
+                        g.connect(audioCtx.destination);
+                        o.start(now + idx * 0.08);
+                        o.stop(now + idx * 0.08 + 1.25);
+                    });
+                }
+                else if (type === 'dip') {
+                    // صدای غوطه‌ور شدن در شکلات
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(320, now);
+                    osc.frequency.exponentialRampToValueAtTime(640, now + 0.25);
+
+                    gain.gain.setValueAtTime(0.18, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                }
+            } catch (e) {
+                console.warn('Audio playback skipped:', e);
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('soundIcon');
+            const text = document.getElementById('soundText');
+            if (soundEnabled) {
+                icon.textContent = '🔊';
+                text.textContent = 'صدا روشن';
+                playSweetNote('pop');
+            } else {
+                icon.textContent = '🔇';
+                text.textContent = 'صدا بی‌صدا';
+            }
+        }
+
+        // ==========================================
+        // ۲. جملات عاشقانه و شیرین
+        // ==========================================
+        const sweetQuotes = [
+            "تو از شیرین‌ترین شکلات دنیا هم شیرین‌تری! 🍫💜",
+            "لبخندت درست مثل یه توت‌فرنگی تازه، حالِ دلم رو خوب می‌کنه 🍓✨",
+            "دنیا با رنگ‌های آبی و بنفش قشنگه، ولی با حضور تو بهشته 💙💜",
+            "اگه عشق یه طعم داشت، قطعاً ترکیب توت‌فرنگی و شکلات بود! 🍓🍫",
+            "هر بار که بهت فکر می‌کنم، قلبم پر از جرقه‌های بنفش و آبی می‌شه ✨💫",
+            "تو بهترین اتفاق و قشنگ‌ترین سورپرایز زندگی منی 💕",
+            "بودن کنار تو آرامش‌بخش‌ترین حس دنیاست؛ درست مثل آبیِ آسمون شب 🌌💙",
+            "شیرینیِ زندگی من با خنده‌های تو کامل می‌شه! 🥰🍓"
+        ];
+
+        let sweetnessLevel = 100;
+        let lastQuoteIndex = -1;
+
+        function getRandomQuote() {
+            let idx;
+            do {
+                idx = Math.floor(Math.random() * sweetQuotes.length);
+            } while (idx === lastQuoteIndex && sweetQuotes.length > 1);
+            lastQuoteIndex = idx;
+            return sweetQuotes[idx];
+        }
+
+        function increaseSweetness(amount = 5) {
+            sweetnessLevel += amount;
+            const el = document.getElementById('sweetnessScore');
+            // تبدیل اعداد انگلیسی به فارسی
+            el.textContent = sweetnessLevel.toLocaleString('fa-IR') + '٪';
+            el.classList.add('scale-125');
+            setTimeout(() => el.classList.remove('scale-125'), 200);
+        }
+
+        // ==========================================
+        // ۳. انیمیشن ذرات شناور (توت‌فرنگی، شکلات و قلب)
+        // ==========================================
+        const particleEmojis = ['🍓', '🍫', '💜', '💙', '✨', '🤎', '💫'];
+
+        function spawnParticle(x, y, customEmoji = null) {
+            const el = document.createElement('div');
+            el.className = 'floating-particle text-2xl sm:text-3xl';
+            el.textContent = customEmoji || particleEmojis[Math.floor(Math.random() * particleEmojis.length)];
+            
+            const tx = (Math.random() - 0.5) * 120 + 'px';
+            const tx2 = (Math.random() - 0.5) * 180 + 'px';
+            const rot = (Math.random() - 0.5) * 90 + 'deg';
+            
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            el.style.setProperty('--tx', tx);
+            el.style.setProperty('--tx2', tx2);
+            el.style.setProperty('--rot', rot);
+
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 1600);
+        }
+
+        // ایجاد ذرات هنگام کلیک در هر جای صفحه
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('input, textarea')) return;
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    spawnParticle(
+                        e.clientX + (Math.random() - 0.5) * 30,
+                        e.clientY + (Math.random() - 0.5) * 30
+                    );
+                }, i * 60);
+            }
+        });
+
+        // ردپای ملایم هنگام حرکت موس (در دسکتاپ)
+        let lastMoveTime = 0;
+        document.addEventListener('mousemove', (e) => {
+            const now = Date.now();
+            if (now - lastMoveTime > 180) {
+                lastMoveTime = now;
+                if (Math.random() > 0.45) {
+                    const miniEmojis = ['✨', '💜', '💙', '🍓'];
+                    spawnParticle(e.clientX, e.clientY, miniEmojis[Math.floor(Math.random() * miniEmojis.length)]);
+                }
+            }
+        });
+
+        // ایجاد المان‌های معلق در پس‌زمینه
+        function createAmbientBackground() {
+            const container = document.getElementById('ambient-elements');
+            const items = ['🍓', '🍫', '💜', '💙', '✨'];
+            for (let i = 0; i < 16; i++) {
+                const span = document.createElement('span');
+                span.textContent = items[i % items.length];
+                span.className = 'absolute text-2xl sm:text-3xl opacity-20 animate-float';
+                span.style.left = Math.random() * 95 + '%';
+                span.style.top = Math.random() * 95 + '%';
+                span.style.animationDelay = (Math.random() * 5) + 's';
+                span.style.animationDuration = (5 + Math.random() * 5) + 's';
+                container.appendChild(span);
+            }
+        }
+
+        // ==========================================
+        // ۴. تعامل پاکت نامه عاشقانه
+        // ==========================================
+        let isEnvelopeOpen = false;
+
+        function toggleEnvelope() {
+            const container = document.getElementById('envelopeContainer');
+            const prompt = document.getElementById('envelopePrompt');
+            const seal = document.getElementById('envelopeSeal');
+            
+            isEnvelopeOpen = !isEnvelopeOpen;
+            
+            if (isEnvelopeOpen) {
+                container.classList.add('envelope-open');
+                prompt.style.opacity = '0';
+                seal.style.opacity = '0';
+                playSweetNote('envelope');
+                increaseSweetness(15);
+                
+                // انفجار شادی از اطراف پاکت
+                const rect = container.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                for (let i = 0; i < 12; i++) {
+                    setTimeout(() => {
+                        spawnParticle(
+                            centerX + (Math.random() - 0.5) * 200,
+                            centerY + (Math.random() - 0.5) * 100
+                        );
+                    }, i * 50);
+                }
+            } else {
+                container.classList.remove('envelope-open');
+                setTimeout(() => {
+                    prompt.style.opacity = '1';
+                    seal.style.opacity = '1';
+                }, 400);
+                playSweetNote('pop');
+            }
+        }
+
+        // ==========================================
+        // ۵. تعامل کارگاه توت‌فرنگی و شکلات
+        // ==========================================
+        function dipStrawberry() {
+            const berry = document.getElementById('activeStrawberry');
+            const badge = document.getElementById('chocoBadge');
+            const quoteText = document.getElementById('sweetQuoteText');
+            const quoteBox = document.getElementById('sweetQuoteBox');
+
+            playSweetNote('dip');
+            increaseSweetness(10);
+
+            // انیمیشن فرو رفتن در شکلات
+            berry.style.transform = 'translateY(18px) scale(0.9) rotate(12deg)';
+            
+            setTimeout(() => {
+                // تغییر ظاهر توت‌فرنگی به حالت شکلاتی درخشان
+                berry.style.transform = 'translateY(-16px) scale(1.15) rotate(-6deg)';
+                berry.style.filter = 'drop-shadow(0 8px 12px rgba(107, 52, 16, 0.9)) sepia(0.35) saturate(1.4)';
+                badge.style.opacity = '1';
+
+                // نمایش جمله عاشقانه جدید
+                quoteBox.classList.add('scale-105', 'border-purple-400');
+                quoteText.textContent = getRandomQuote();
+                
+                setTimeout(() => {
+                    quoteBox.classList.remove('scale-105', 'border-purple-400');
+                }, 300);
+            }, 250);
+        }
+
+        function triggerSweetAction(itemType) {
+            const berry = document.getElementById('activeStrawberry');
+            const badge = document.getElementById('chocoBadge');
+            const quoteText = document.getElementById('sweetQuoteText');
+
+            playSweetNote('pop');
+            increaseSweetness(5);
+
+            if (itemType === 'strawberry') {
+                berry.textContent = '🍓';
+                berry.style.filter = 'none';
+                berry.style.transform = 'translateY(-16px) scale(1.1)';
+                badge.style.opacity = '0';
+            } else if (itemType === 'chocolate') {
+                berry.textContent = '🍫';
+                berry.style.filter = 'none';
+                berry.style.transform = 'translateY(-16px) scale(1.1)';
+                badge.style.opacity = '0';
+            }
+
+            quoteText.textContent = getRandomQuote();
+        }
+
+        // باران توت‌فرنگی و شکلات در کل صفحه
+        function launchSweetStorm(e) {
+            if (e) e.stopPropagation();
+            playSweetNote('envelope');
+            increaseSweetness(25);
+
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            for (let i = 0; i < 28; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * width;
+                    const y = height * 0.4 + Math.random() * (height * 0.5);
+                    spawnParticle(x, y);
+                }, i * 45);
+            }
+        }
+
+        // ==========================================
+        // ۶. شخصی‌سازی پیام و ساخت لینک اختصاصی
+        // ==========================================
+        const DEFAULT_NAME = "عزیزترینم";
+        const DEFAULT_MSG = "بودنت تو زندگیم درست مثل ترکیب توت‌فرنگی و شکلاته؛ هم طراوت و تازگی میاره، هم شیرینی و آرامش! مرسی که هستی و دنیام رو با رنگ‌های قشنگت زیباتر می‌کنی. 💜💙";
+
+        function loadSavedData() {
+            // ابتدا پارامترهای URL را چک می‌کنیم (برای زمانی که لینک برای پارتنر ارسال شده)
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlName = urlParams.get('to');
+            const urlMsg = urlParams.get('msg');
+
+            const savedName = urlName || localStorage.getItem('romantic_partner_name') || DEFAULT_NAME;
+            const savedMsg = urlMsg || localStorage.getItem('romantic_love_msg') || DEFAULT_MSG;
+
+            document.getElementById('displayPartnerName').textContent = savedName;
+            document.getElementById('displayLoveMessage').textContent = savedMsg;
+
+            document.getElementById('inputPartnerName').value = savedName === DEFAULT_NAME ? '' : savedName;
+            document.getElementById('inputLoveMessage').value = savedMsg;
+        }
+
+        function openSettings() {
+            playSweetNote('pop');
+            const modal = document.getElementById('settingsModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.getElementById('copyFeedback').classList.add('hidden');
+        }
+
+        function closeSettings() {
+            const modal = document.getElementById('settingsModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function saveCustomization() {
+            const nameInput = document.getElementById('inputPartnerName').value.trim();
+            const msgInput = document.getElementById('inputLoveMessage').value.trim();
+
+            const finalName = nameInput || DEFAULT_NAME;
+            const finalMsg = msgInput || DEFAULT_MSG;
+
+            document.getElementById('displayPartnerName').textContent = finalName;
+            document.getElementById('displayLoveMessage').textContent = finalMsg;
+
+            try {
+                localStorage.setItem('romantic_partner_name', finalName);
+                localStorage.setItem('romantic_love_msg', finalMsg);
+            } catch (e) {}
+
+            playSweetNote('envelope');
+            closeSettings();
+            launchSweetStorm();
+        }
+
+        function copyShareableLink() {
+            const nameInput = document.getElementById('inputPartnerName').value.trim() || DEFAULT_NAME;
+            const msgInput = document.getElementById('inputLoveMessage').value.trim() || DEFAULT_MSG;
+
+            // ساخت لینک همراه با پارامترهای نام و پیام
+            const baseUrl = window.location.href.split('?')[0];
+            const shareUrl = `${baseUrl}?to=${encodeURIComponent(nameInput)}&msg=${encodeURIComponent(msgInput)}`;
+
+            // کپی در کلیپ‌بورد با روش سازگار با iframe
+            const tempInput = document.createElement('textarea');
+            tempInput.value = shareUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            playSweetNote('pop');
+            const feedback = document.getElementById('copyFeedback');
+            feedback.classList.remove('hidden');
+        }
+
+        // اجرای اولیه هنگام بارگذاری صفحه
+        window.addEventListener('DOMContentLoaded', () => {
+            createAmbientBackground();
+            loadSavedData();
+        });
+    </script>
+</body>
+</html>
+```
